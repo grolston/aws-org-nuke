@@ -83,17 +83,6 @@ main() {
     management_account_id=$(aws sts get-caller-identity --query 'Account' --output text)
     check_aws_command
 
-    # Confirm execution
-    echo -e "${RED}WARNING: This script will:${NC}"
-    echo -e "${RED}1. Deregister all delegated administrators${NC}"
-    echo -e "${RED}2. Close all member accounts${NC}"
-    echo -e "${RED}This action is IRREVERSIBLE. Type 'PROCEED' to continue:${NC}"
-    read proceed_confirmation
-
-    if [ "$proceed_confirmation" != "PROCEED" ]; then
-        echo "Operation cancelled."
-        exit 1
-    fi
 
     # Step 1: Deregister delegated administrators
     echo -e "${YELLOW}Step 1: Deregistering delegated administrators...${NC}"
@@ -134,7 +123,7 @@ main() {
             if [ "$account_id" != "$management_account_id" ]; then
                 close_member_account "$account_id" "$account_name"
                 closed_accounts+=("$account_id")
-                sleep 10
+                sleep 15
             fi
         done <<< "$member_accounts"
     else
