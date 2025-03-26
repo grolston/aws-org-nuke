@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export AWS_RETRY_MODE=adaptive
+export AWS_MAX_ATTEMPTS=5
+
 set -e
 error_handler() {
     echo "Error occurred in script at line: ${1}"
